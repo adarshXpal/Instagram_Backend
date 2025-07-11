@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
@@ -13,7 +12,6 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/adarshXpal/Instagram_Backend.git"
@@ -32,6 +30,7 @@
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
+    "ioredis": "^5.6.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.3",
     "multer": "^2.0.1"
