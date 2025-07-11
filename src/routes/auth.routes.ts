@@ -5,7 +5,7 @@ const authRoute = Router();
 authRoute.post("/register", auth.register);
 // authRoute.post("/login");
 // authRoute.post("/logout");
-// authRoute.post("/refresh-token");
+authRoute.post("/refresh-token", auth.refrehToken);
 // authRoute.post("/forgot-password");
 // authRoute.post("/reset-password");
 

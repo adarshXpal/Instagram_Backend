@@ -1,3 +1,3 @@
-import { register } from "./auth.controller";
+import { register, refrehToken } from "./auth.controller";
 
-export default { register };
+export default { register, refrehToken };
