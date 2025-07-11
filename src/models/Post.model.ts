@@ -1,7 +1,7 @@
 import { IPost } from "interfaces/Post.interface";
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 
-export const postSchema = new Schema<IPost>(
+const postSchema = new Schema<IPost>(
     {
         user: { type: Schema.Types.ObjectId, ref: "User", required: true },
         caption: { type: String },
@@ -15,3 +15,5 @@ export const postSchema = new Schema<IPost>(
     },
     { timestamps: true }
 );
+
+export default model<IPost>("posts", postSchema);

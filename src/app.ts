@@ -2,12 +2,16 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import Routes from "./routes";
+import connect from "./config/database.config";
+import dotenv from "dotenv";
 
+dotenv.config({ path: "./.env.example" });
 const app = express();
 
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
+connect();
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
