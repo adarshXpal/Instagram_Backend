@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
-import Routes from "routes";
+import Routes from "./routes";
 
 const app = express();
 
