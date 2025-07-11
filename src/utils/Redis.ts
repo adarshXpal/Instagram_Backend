@@ -19,7 +19,7 @@ class RedisService {
         this.redis.on("connect", () => {
             console.log("Redis client connected");
         });
-        this.redis.on("error", (err) => {
+        this.redis.on("error", (err: Error) => {
             console.error("Redis error:", err);
         });
     }
