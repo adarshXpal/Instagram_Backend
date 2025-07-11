@@ -1,8 +1,8 @@
 import { Router } from "express";
-
+import auth from "../controllers";
 const authRoute = Router();
 
-authRoute.post("/register");
+authRoute.post("/register", auth.register);
 authRoute.post("/login");
 authRoute.post("/logout");
 authRoute.post("/refresh-token");
