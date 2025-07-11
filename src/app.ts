@@ -18,12 +18,12 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/auth", Routes.authRoute);
-app.use("/api/users", Routes.userRoute);
-app.use("/api/posts", Routes.postRouter);
-app.use("/api/posts", Routes.postCommentRouter);
-app.use("/api/comments", Routes.commentRouter);
-app.use("/api/stories", Routes.storiesRouter);
-app.use("/api/media", Routes.mediaRouter);
+// app.use("/api/users", Routes.userRoute);
+// app.use("/api/posts", Routes.postRouter);
+// app.use("/api/posts", Routes.postCommentRouter);
+// app.use("/api/comments", Routes.commentRouter);
+// app.use("/api/stories", Routes.storiesRouter);
+// app.use("/api/media", Routes.mediaRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
