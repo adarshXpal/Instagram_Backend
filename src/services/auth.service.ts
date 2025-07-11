@@ -1,9 +1,7 @@
 import bcrypt from "bcryptjs";
 import userModel from "../models/User.model";
 import DatabaseService from "../utils/database";
-import jwt from "jsonwebtoken";
-
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+import JWTService from "../utils/jwt.utils";
 
 const db = new DatabaseService(userModel);
 
@@ -12,11 +10,11 @@ export const registerUser = async (userData: {
     email: string;
     password: string;
     fullName: string;
-}): Promise<{ token: string }> => {
+}): Promise<{ token: string; refreshToken: string }> => {
     const { username, email, password, fullName } = userData;
 
     const existingUser = await db.findOne({
-        $or: [{ username }, { email }],
+        email,
     });
     if (existingUser) {
         throw new Error("User already exists");
@@ -31,9 +29,14 @@ export const registerUser = async (userData: {
         fullName,
     });
 
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
-        expiresIn: "1h",
-    });
+    const token = JWTService.generateToken({ userId: user._id }, 60 * 60);
+    const refreshToken = JWTService.generateToken(
+        {
+            userId: user._id,
+            refreshToken: true,
+        },
+        365 * 24 * 60 * 60
+    );
 
-    return { token };
+    return { token, refreshToken };
 };

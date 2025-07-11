@@ -1,9 +1,12 @@
 import Redis from "ioredis";
 
+const redisHost = process.env.REDIS_HOST || "localhost";
+const redisPort = parseInt(process.env.REDIS_PORT || "6379");
+
 class RedisService {
     private redis: Redis;
 
-    constructor(redisHost: string, redisPort: number) {
+    constructor() {
         if (
             redisHost.startsWith("redis://") ||
             redisHost.startsWith("rediss://")
