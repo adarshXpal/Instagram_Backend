@@ -12,6 +12,5 @@ postRouter.post("/:postId/like");
 postRouter.get("/:postId/like");
 postRouter.get("/user/:userId");
 postRouter.post("/:postId/archive");
-//Comment API 
 
 export default postRouter;
