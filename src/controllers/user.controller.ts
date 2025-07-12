@@ -44,6 +44,7 @@ const getUserProfileByUsernameController = async (req: Request, res: Response) =
 const searchUsersController = async (req: Request, res: Response) => {
   try {
     const { q: query } = req.query;
+    console.log("Query received:", query);
     if (!query) {
       return ResponseService.error(res, "Query parameter is required !!", 400, {});
     }
@@ -53,6 +54,18 @@ const searchUsersController = async (req: Request, res: Response) => {
     ResponseService.error(res, "something went wrong !!", 500, err);
   }
 }
-export default { getUserProfileController, updateUserProfileController, getUserProfileByUsernameController, searchUsersController };
+
+export const deleteUserAccountController = async (req: Request, res: Response) => {
+  try {
+    if (req.user) {
+      const userId = req.user._id;
+      await userService.deleteUserAccount(userId as string);
+      ResponseService.success(res, {}, 'User account deleted successfully', 200);
+    }
+  } catch (error: any) {
+    ResponseService.error(res, 'Something went wrong', 500, error);
+  }
+};
+export default { getUserProfileController, updateUserProfileController, getUserProfileByUsernameController, searchUsersController, deleteUserAccountController };
 
 
