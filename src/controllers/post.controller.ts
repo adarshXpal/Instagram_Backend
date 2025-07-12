@@ -1,0 +1,9 @@
+export const createPosts = () => {};
+export const getPosts = () => {};
+export const getPostById = () => {};
+export const updatePostById = () => {};
+export const deletePostById = () => {};
+export const likePostById = () => {};
+export const getPostLike = () => {};
+export const getPostByUserId = () => {};
+export const archivePost = () => {};

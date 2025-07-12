@@ -1,16 +1,17 @@
 import { Router } from "express";
+import controllers from "../controllers";
 
 const postRouter = Router();
 
 //Post Api's
-postRouter.post("/");
-postRouter.get("/");
-postRouter.get("/:postId");
-postRouter.put("/:postId");
-postRouter.post("/:postId/like");
-postRouter.post("/:postId/like");
-postRouter.get("/:postId/like");
-postRouter.get("/user/:userId");
-postRouter.post("/:postId/archive");
+postRouter.post("/", controllers.post.createPosts);
+postRouter.get("/", controllers.post.getPosts);
+postRouter.get("/:postId", controllers.post.getPostById);
+postRouter.put("/:postId", controllers.post.updatePostById);
+postRouter.delete("/:postId", controllers.post.deletePostById);
+postRouter.post("/:postId/like", controllers.post.likePostById);
+postRouter.get("/:postId/like", controllers.post.getPostLike);
+postRouter.get("/user/:userId", controllers.post.getPostByUserId);
+postRouter.post("/:postId/archive", controllers.post.archivePost);
 
 export default postRouter;

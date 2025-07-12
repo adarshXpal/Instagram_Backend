@@ -29,7 +29,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     if (!user) {
       ResponseService.error(res, "User not found", 404, {});
     }
-    req.user = user;
+    req.user = user|| undefined;
     next();
   } catch (err) {
     ResponseService.error(res, "Token is not valid", 401, err);
