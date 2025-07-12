@@ -6,11 +6,11 @@ import authRoute from "./auth.routes";
 // import mediaRouter from "./media.routes";
 
 export default {
-    authRoute,
-    // userRoute,
-    // postRouter,
-    // postCommentRouter,
-    // commentRouter,
-    // storiesRouter,
-    // mediaRouter,
+  authRoute,
+  // userRoute,
+  // postRouter,
+  // postCommentRouter,
+  // commentRouter,
+  // storiesRouter,
+  // mediaRouter,
 };

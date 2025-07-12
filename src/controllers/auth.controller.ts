@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerUser } from "../services/auth.service";
+import { registerUser, loginUser, forgotPassword } from "../services/auth.service";
 import ResponseService from "../utils/response.utils";
 import RedisService from "../utils/Redis";
 import JWTService from "../utils/jwt.utils";
@@ -41,6 +41,48 @@ export const register = async (req: Request, res: Response) => {
     ResponseService.error(res, "something went wrong", 500, error);
   }
 };
+export const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return ResponseService.error(res, "Email and password are required", 400, {});
+    }
+    const { token, refreshToken } = await loginUser({ email, password });
+    res.cookie("token", token, { maxAge: 24 * 60 * 60 });
+    res.cookie("refresh_token", refreshToken, { maxAge: 365 * 24 * 60 * 60 });
+    await redis.set(token, refreshToken);
+    ResponseService.success(res, {}, "Login Successful", 200);
+  } catch (error: any) {
+    if (error.messsage === "User not found" || error.messsage === "Invalid Password") {
+      return ResponseService.error(res, error.messsage, 401, {});
+    }
+    ResponseService.error(res, "something went wrong", 500, error);
+  }
+}
+
+export const forgotPasswordController = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return ResponseService.error(res, "Email is required", 400, {});
+    }
+    const token = await forgotPassword(email);
+
+    await redis.set(token, email);
+    ResponseService.success(res, {}, "Password reset link sent successfully", 200);
+  } catch (error: any) {
+    if (error.messsage === "User not found") {
+      return ResponseService.error(res, error.messsage, 404, {});
+    }
+    ResponseService.error(res, "something went wrong", 500, error);
+  }
+}
+
+export const logout = (req: Request, res: Response) => {
+  res.cookie("token", "");
+  res.cookie("refresh_token", "");
+  return ResponseService.success(res, {}, "Logged out Successfully !!", 200);
+}
 
 export const refreshToken = async (req: Request, res: Response) => {
   try {
