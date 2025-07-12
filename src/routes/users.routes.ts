@@ -1,21 +1,23 @@
 import { Router } from "express";
+import { authenticate } from "../middleware/auth.middleware";
+import userController from "../controllers/user.controller";
 
 const userRoute = Router();
 // User Management APIs
-userRoute.get("/profile");
-userRoute.put("/profile");
-userRoute.post("/upload-avatar");
-userRoute.get("/:username");
-userRoute.get("/search");
-userRoute.get("/:userId/posts");
-userRoute.delete("/account");
-
-// Follow System APIs
-userRoute.post("/:userId/follow");
-userRoute.get("/:userId/followers");
-userRoute.get("/:userId/following");
-userRoute.post("/:userId/follow-request");
-userRoute.put("/follow-requests/:requestId");
-userRoute.get("/follow-requests");
+userRoute.get("/profile", authenticate, userController.getUserProfileController);
+userRoute.put("/profile", authenticate, userController.updateUserProfileController);
+// userRoute.post("/upload-avatar", authenticate,);
+userRoute.get("/:username", authenticate, userController.getUserProfileByUsernameController);
+userRoute.get("/search", authenticate, userController.searchUsersController);
+// userRoute.get("/:userId/posts", authenticate);
+// userRoute.delete("/account", authenticate);
+//
+// // Follow System APIs
+// userRoute.post("/:userId/follow");
+// userRoute.get("/:userId/followers");
+// userRoute.get("/:userId/following");
+// userRoute.post("/:userId/follow-request");
+// userRoute.put("/follow-requests/:requestId");
+// userRoute.get("/follow-requests");
 
 export default userRoute;

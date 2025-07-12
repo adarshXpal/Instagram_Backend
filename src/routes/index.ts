@@ -1,5 +1,5 @@
 import authRoute from "./auth.routes";
-// import userRoute from "./users.routes";
+import userRoute from "./users.routes";
 // import postRouter from "./posts.routes";
 // import { postCommentRouter, commentRouter } from "./comments.routes";
 // import storiesRouter from "./stories.routes";
@@ -7,7 +7,7 @@ import authRoute from "./auth.routes";
 
 export default {
   authRoute,
-  // userRoute,
+  userRoute,
   // postRouter,
   // postCommentRouter,
   // commentRouter,
