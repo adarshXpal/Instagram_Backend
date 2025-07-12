@@ -1,3 +1,11 @@
-import { register, login, logout, refreshToken, forgotPasswordController } from "./auth.controller";
+import {
+    register,
+    login,
+    logout,
+    refreshToken,
+    forgotPasswordController,
+} from "./auth.controller";
 
-export default { register, login, logout, refreshToken, forgotPasswordController };
+export default {
+    auth: { register, login, logout, refreshToken, forgotPasswordController },
+};
