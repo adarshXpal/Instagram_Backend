@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { authenticate } from "../middleware/auth.middleware";
 import userController from "../controllers/user.controller";
+import { followUserController } from "../controllers/follow.controller";
 
 const userRoute = Router();
 // User Management APIs
@@ -13,7 +14,7 @@ userRoute.get("/search", authenticate, userController.searchUsersController);
 userRoute.delete("/account", authenticate, userController.deleteUserAccountController);
 //
 // // Follow System APIs
-// userRoute.post("/:userId/follow");
+userRoute.post("/:targetUserId/follow", authenticate, followUserController);
 // userRoute.get("/:userId/followers");
 // userRoute.get("/:userId/following");
 // userRoute.post("/:userId/follow-request");
