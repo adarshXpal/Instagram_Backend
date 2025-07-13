@@ -17,9 +17,9 @@ const storage = multer.diskStorage({
         cb(null, "avatar/");
     },
     filename: function (req, file, cb) {
-        const mediaId = createUUID().toUpperCase();
+        const avatarId = createUUID().toUpperCase();
         const ext = path.extname(file.originalname);
-        const filename = `${mediaId}${ext}`;
+        const filename = `${avatarId}${ext}`;
         cb(null, filename);
     },
 });

@@ -14,11 +14,17 @@ import ResponseService from '../utils/response.utils';
 
 export const createPostController = async (req: Request, res: Response) => {
   try {
-    const postData = { ...req.body, user: req.user._id };
+    const postFile = req.file;
+    if (!postFile) return ResponseService.error(res, "Post not found", 400, {});
+
+    const filename = postFile?.filename;
+    const fileUrl = `${req.protocol}://${req.get("host")}/posts/${filename}`;
+
+    const postData = { ...req.body, user: req.user._id, imageUrl: fileUrl };
     const post = await createPost(postData);
     ResponseService.success(res, post, 'Post created successfully', 201);
   } catch (error: any) {
-    ResponseService.error(res, error.message, 400, error);
+    ResponseService.error(res, error.message, 500, error);
   }
 };
 
