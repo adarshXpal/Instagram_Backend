@@ -1,14 +1,14 @@
 import { Router } from "express";
+import { authenticate } from "../middleware/auth.middleware";
+import { addCommentController, getPostCommentsController, updateCommentController, deleteCommentController, likeUnlikeCommentController, replyToCommentController } from "../controllers/comment.controller";
 
-export const postCommentRouter = Router();
-export const commentRouter = Router();
+const commentRouter = Router();
 
-//Post router with comments.
-postCommentRouter.get("/:postId/comments");
-postCommentRouter.post("/:postId/comments");
-//comments routes
-commentRouter.put("/:commentId");
-commentRouter.delete("/:commentId");
-commentRouter.post("/:commentId/like");
-commentRouter.post("/:commentId/reply");
+commentRouter.post('/posts/:postId/comments', authenticate, addCommentController);
+commentRouter.get('/posts/:postId/comments', authenticate, getPostCommentsController);
+commentRouter.put('/comments/:commentId', authenticate, updateCommentController);
+commentRouter.delete('/comments/:commentId', authenticate, deleteCommentController);
+commentRouter.post('/comments/:commentId/like', authenticate, likeUnlikeCommentController);
+commentRouter.post('/comments/:commentId/reply', authenticate, replyToCommentController);
 
+export default commentRouter;

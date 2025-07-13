@@ -1,17 +1,19 @@
 import { Router } from "express";
 import controllers from "../controllers";
-
+import { authenticate } from "../middleware/auth.middleware";
+import { updatePostController } from "controllers/post.controller";
+import commentRouter from "./comments.routes";
 const postRouter = Router();
 
 //Post Api's
-postRouter.post("/", controllers.post.createPosts);
-postRouter.get("/", controllers.post.getPosts);
-postRouter.get("/:postId", controllers.post.getPostById);
-postRouter.put("/:postId", controllers.post.updatePostById);
-postRouter.delete("/:postId", controllers.post.deletePostById);
-postRouter.post("/:postId/like", controllers.post.likePostById);
-postRouter.get("/:postId/like", controllers.post.getPostLike);
-postRouter.get("/user/:userId", controllers.post.getPostByUserId);
-postRouter.post("/:postId/archive", controllers.post.archivePost);
+postRouter.post("/", authenticate, controllers.post.createPostController);
+postRouter.get("/", authenticate, controllers.post.getFeedPostsController);
+postRouter.get("/:postId", authenticate, controllers.post.getPostByIdController);
+postRouter.put("/:postId", authenticate, controllers.post.updatePostController);
+postRouter.delete("/:postId", authenticate, controllers.post.deletePostController);
+postRouter.post("/:postId/like", authenticate, controllers.post.likeUnlikePostController);
+postRouter.get("/:postId/likes", authenticate, controllers.post.getPostLikesController);
+postRouter.get("/user/:userId", authenticate, controllers.post.getUserPostsController);
+postRouter.post("/:postId/archive", authenticate, controllers.post.archiveUnarchivePostController);
 
 export default postRouter;

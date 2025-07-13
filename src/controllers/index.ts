@@ -1,34 +1,34 @@
 import {
-    register,
-    login,
-    logout,
-    refreshToken,
-    forgotPasswordController,
+  register,
+  login,
+  logout,
+  refreshToken,
+  forgotPasswordController,
 } from "./auth.controller";
 
 import {
-    createPosts,
-    getPosts,
-    getPostById,
-    updatePostById,
-    deletePostById,
-    likePostById,
-    getPostLike,
-    getPostByUserId,
-    archivePost,
+  createPostController,
+  getFeedPostsController,
+  getPostByIdController,
+  updatePostController,
+  deletePostController,
+  likeUnlikePostController,
+  getPostLikesController,
+  getUserPostsController,
+  archiveUnarchivePostController
 } from "./post.controller";
 
 export default {
-    auth: { register, login, logout, refreshToken, forgotPasswordController },
-    post: {
-        createPosts,
-        getPosts,
-        getPostById,
-        updatePostById,
-        deletePostById,
-        likePostById,
-        getPostLike,
-        getPostByUserId,
-        archivePost,
-    },
+  auth: { register, login, logout, refreshToken, forgotPasswordController },
+  post: {
+    createPostController,
+    getFeedPostsController,
+    getPostByIdController,
+    updatePostController,
+    deletePostController,
+    likeUnlikePostController,
+    getPostLikesController,
+    getUserPostsController,
+    archiveUnarchivePostController
+  },
 };

@@ -19,6 +19,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
+app.use('/api', Routes.commentRouter);
 app.use("/api/auth", Routes.authRoute);
 app.use("/api/users", Routes.userRoute);
 app.use("/api/posts", Routes.postRouter);
