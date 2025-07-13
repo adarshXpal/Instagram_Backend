@@ -9,24 +9,25 @@ app.use(cookieParser());
 
 import Routes from "./routes";
 import connect from "./config/database.config";
+import path from "path";
 
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
 connect();
 
+app.use("/images", express.static(path.resolve("images")));
+
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-app.use('/api', Routes.commentRouter);
+app.use("/api", Routes.commentRouter);
 app.use("/api/auth", Routes.authRoute);
 app.use("/api/users", Routes.userRoute);
 app.use("/api/posts", Routes.postRouter);
-// app.use("/api/posts", Routes.postCommentRouter);
-// app.use("/api/comments", Routes.commentRouter);
 app.use("/api/stories", Routes.storiesRouter);
-// app.use("/api/media", Routes.mediaRouter);
+app.use("/api/media", Routes.mediaRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
