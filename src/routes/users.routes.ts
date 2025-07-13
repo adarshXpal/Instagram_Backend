@@ -2,12 +2,34 @@ import { Router } from "express";
 import { authenticate } from "../middleware/auth.middleware";
 import userController from "../controllers/user.controller";
 import { toggleFollowUserController, getUserFollowersController, getUserFollowingController, sendFollowRequestController, acceptFollowRequestController, rejectFollowRequestController, getPendingFollowRequestsController } from "../controllers/follow.controller";
+import fs from "fs";
+import multer from "multer";
+import path from "path";
+import { v4 as createUUID } from "uuid";
 
+
+if (!fs.existsSync("avatar")) {
+    fs.mkdirSync("avatar");
+}
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "avatar/");
+    },
+    filename: function (req, file, cb) {
+        const mediaId = createUUID().toUpperCase();
+        const ext = path.extname(file.originalname);
+        const filename = `${mediaId}${ext}`;
+        cb(null, filename);
+    },
+});
+
+const upload = multer({ storage });
 const userRoute = Router();
 // User Management APIs
 userRoute.get("/profile", authenticate, userController.getUserProfileController);
 userRoute.put("/profile", authenticate, userController.updateUserProfileController);
-// userRoute.post("/upload-avatar", authenticate,);
+userRoute.post("/upload-avatar", authenticate, upload.single("image"),userController.uploadAvatar);
 userRoute.get("/:username", authenticate, userController.getUserProfileByUsernameController);
 userRoute.get("/find/search", authenticate, userController.searchUsersController);
 // userRoute.get("/:userId/posts", authenticate)

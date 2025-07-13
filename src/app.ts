@@ -16,7 +16,8 @@ app.use(helmet());
 app.use(express.json());
 connect();
 
-app.use("/images", express.static(path.resolve("images")));
+app.use("/media", express.static(path.resolve("media")));
+app.use("/avatar", express.static(path.resolve("avatar")));
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");

@@ -9,15 +9,15 @@ import path from "path";
 import { v4 as createUUID } from "uuid";
 
 import fs from "fs";
-if (!fs.existsSync("images")) {
-    fs.mkdirSync("images");
+if (!fs.existsSync("media")) {
+    fs.mkdirSync("media");
 }
 
 const mediaRouter = Router();
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "images/");
+        cb(null, "media/");
     },
     filename: function (req, file, cb) {
         const mediaId = createUUID().toUpperCase();
