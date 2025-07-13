@@ -5,7 +5,6 @@ export interface IStory extends Document {
   _id: ObjectId;
   user: ObjectId;
   mediaUrl: string;
-  mediaType: MediaType;
   caption?: string;
   viewers: ObjectId[];
   viewCount: number;

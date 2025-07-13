@@ -16,6 +16,7 @@ app.use(helmet());
 app.use(express.json());
 connect();
 
+app.use("/story", express.static(path.resolve("story")));
 app.use("/posts", express.static(path.resolve("posts")));
 app.use("/media", express.static(path.resolve("media")));
 app.use("/avatar", express.static(path.resolve("avatar")));

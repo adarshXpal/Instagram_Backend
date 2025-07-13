@@ -10,7 +10,13 @@ import ResponseService from '../utils/response.utils';
 
 export const createStoryController = async (req: Request, res: Response) => {
   try {
-    const storyData = { ...req.body, user: req.user._id };
+    const storyFile = req.file;
+    if (!storyFile) return ResponseService.error(res, "story not found", 400, {});
+
+    const filename = storyFile?.filename;
+    const fileUrl = `${req.protocol}://${req.get("host")}/story/${filename}`;
+    
+    const storyData = { ...req.body, user: req.user._id, mediaUrl: fileUrl };
     const story = await createStory(storyData);
     ResponseService.success(res, story, 'Story created successfully', 201);
   } catch (error: any) {

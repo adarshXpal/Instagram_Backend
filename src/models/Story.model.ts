@@ -5,11 +5,6 @@ const storySchema = new Schema<IStory>(
   {
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     mediaUrl: { type: String, required: true },
-    mediaType: {
-      type: String,
-      enum: ['image', 'video'],
-      required: true
-    },
     caption: { type: String },
     viewers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     viewCount: { type: Number, default: 0 },
