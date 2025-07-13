@@ -18,6 +18,14 @@ import {
   archiveUnarchivePostController
 } from "./post.controller";
 
+import {
+  createStoryController,
+  getStoriesFeedController,
+  getUserStoriesController,
+  markStoryAsViewedController,
+  deleteStoryController
+} from "./story.controller";
+
 export default {
   auth: { register, login, logout, refreshToken, forgotPasswordController },
   post: {
@@ -30,5 +38,12 @@ export default {
     getPostLikesController,
     getUserPostsController,
     archiveUnarchivePostController
+  },
+  stories: {
+    createStoryController,
+    getStoriesFeedController,
+    getUserStoriesController,
+    markStoryAsViewedController,
+    deleteStoryController
   },
 };
