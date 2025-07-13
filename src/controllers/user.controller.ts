@@ -43,6 +43,7 @@ const getUserProfileByUsernameController = async (req: Request, res: Response) =
 
 const searchUsersController = async (req: Request, res: Response) => {
   try {
+
     const { q: query } = req.query;
     console.log("Query received:", query);
     if (!query) {

@@ -18,6 +18,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.cookies.token;
+
     if (!token) {
       ResponseService.error(res, "No token provided, authorization denied", 401, {});
     }
@@ -27,9 +28,9 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     }
     const user = await User.findById(decoded.userId).select("-password");
     if (!user) {
-      ResponseService.error(res, "User not found", 404, {});
+      return ResponseService.error(res, "User not found", 404, {});
     }
-    req.user = user|| undefined;
+    req.user = user || undefined;
     next();
   } catch (err) {
     ResponseService.error(res, "Token is not valid", 401, err);
