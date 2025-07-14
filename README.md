@@ -135,6 +135,7 @@ Refer to the environment section above.
 
 ### 4. Build and run locally
 -Change REDIS_HOST=localhost in .env, if running locally !! 
+-Install mongodb and redis locally, and only run redis if not using docker !!
 
 ```bash
 npm run build
