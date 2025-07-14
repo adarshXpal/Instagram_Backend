@@ -1,0 +1,113 @@
+openapi: 3.0.0
+info:
+  title: Instagram Backend API
+  version: 1.0.0
+  description: API documentation for Authentication routes
+
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, email, password, fullName]
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                fullName:
+                  type: string
+      responses:
+        '201':
+          description: User created successfully
+        '400':
+          description: Missing or invalid fields / User already exists
+
+  /api/auth/login:
+    post:
+      summary: Login user and receive JWT tokens in cookies
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful
+          headers:
+            Set-Cookie:
+              description: Auth cookies set (token, refresh_token)
+              schema:
+                type: string
+        '401':
+          description: Invalid credentials
+
+  /api/auth/logout:
+    post:
+      summary: Logout the user and clear auth cookies
+      tags: [Authentication]
+      responses:
+        '200':
+          description: Logged out successfully
+
+  /api/auth/refresh-token:
+    post:
+      summary: Refresh JWT token using cookie-stored refresh token
+      tags: [Authentication]
+      responses:
+        '200':
+          description: Token refreshed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '400':
+          description: Refresh token is wrong or invalid
+        '403':
+          description: Not allowed
+
+  /api/auth/forgot-password:
+    post:
+      summary: Request a password reset email
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Password reset link sent
+        '404':
+          description: User not found
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

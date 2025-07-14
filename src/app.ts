@@ -1,9 +1,14 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+
+
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
+const swaggerDocument = YAML.load('./docs/swagger.yaml');
 import cookieParser from "cookie-parser";
 app.use(cookieParser());
 
@@ -16,6 +21,7 @@ app.use(helmet());
 app.use(express.json());
 connect();
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/story", express.static(path.resolve("story")));
 app.use("/posts", express.static(path.resolve("posts")));
 app.use("/media", express.static(path.resolve("media")));
