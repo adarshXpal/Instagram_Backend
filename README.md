@@ -99,6 +99,7 @@ REDIS_PORT=6379
 ## 🏑 Docker Setup
 
 ### Run with Docker Compose:
+-Make sure nothing is running on port REDIS_PORT=6379, If running kill it !
 
 ```bash
 sudo docker-compose up --build
