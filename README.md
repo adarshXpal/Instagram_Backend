@@ -159,6 +159,17 @@ npm run dev
 ```
 
 ---
+## 🔹 API Documentation
+
+This project uses **Swagger (OpenAPI 3.0)** for complete API documentation.
+
+### 📘 Swagger UI (Local)
+
+Once the server is running, access the Swagger UI at: http://localhost:3000/api-docs
+```bash
+http://localhost:3000/api-docs
+```
+
 
 ## ✅ Testing
 
