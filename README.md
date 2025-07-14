@@ -110,7 +110,7 @@ sudo docker-compose up --build
 - Uses Node 18 Alpine
 - Installs dependencies
 - Builds TypeScript
-- Runs server from `dist/index.js`
+- Runs server from `dist/app.js`
 
 ---
 
