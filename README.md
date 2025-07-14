@@ -162,7 +162,7 @@ npm run dev
 
 ## ✅ Testing
 
-> Tests are currently **not implemented**. To meet the submission requirement, you may add tests with **Jest** and ensure **minimum 70% coverage**.
+> Tests are currently **not implemented**.
 
 ---
 
