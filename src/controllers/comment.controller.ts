@@ -1,4 +1,8 @@
 import { Request, Response } from 'express';
+import { IUser } from "../interfaces/User.interface";
+interface AuthenticatedRequest extends Request {
+  user: IUser;
+}
 import {
   addComment,
   getPostComments,
@@ -9,7 +13,7 @@ import {
 } from '../services/comment.service';
 import ResponseService from '../utils/response.utils';
 
-export const addCommentController = async (req: Request, res: Response) => {
+export const addCommentController = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const commentData = { ...req.body, user: req.user._id, post: req.params.postId };
     const comment = await addComment(commentData);

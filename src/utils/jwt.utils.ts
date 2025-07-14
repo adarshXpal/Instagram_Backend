@@ -4,7 +4,7 @@ import { env } from "process";
 class JWTService {
   private static readonly SECRET_KEY: string =
     env.JWT_SECRET || "your_fallback_secret";
-  private static readonly EXPIRES_IN: number = 60 * 60;
+  private static readonly EXPIRES_IN: number = 365 * 60 * 60;
 
   static generateToken(payload: object, expiresIn?: number): string {
     return jwt.sign(payload, this.SECRET_KEY, {

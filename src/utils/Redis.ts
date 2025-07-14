@@ -2,6 +2,7 @@ import Redis from "ioredis";
 
 const redisHost = process.env.REDIS_HOST || "localhost";
 const redisPort = parseInt(process.env.REDIS_PORT || "6379");
+console.log(`[Redis] Connecting to ${redisHost}:${redisPort}`);
 
 class RedisService {
   private redis: Redis;

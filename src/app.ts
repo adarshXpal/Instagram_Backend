@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
-dotenv.config({ path: "./.env.example" });
+dotenv.config();
 const app = express();
 import cookieParser from "cookie-parser";
 app.use(cookieParser());

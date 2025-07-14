@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { toggleFollowUser, getUserFollowers, getuserFollowing, getUserFollowing, sendFollowRequest, acceptFollowRequest, rejectFollowRequest, getPendingFollowRequests } from '../services/follow.service';
+import { toggleFollowUser, getUserFollowers, getUserFollowing, sendFollowRequest, acceptFollowRequest, rejectFollowRequest, getPendingFollowRequests } from '../services/follow.service';
 import ResponseService from '../utils/response.utils';
 import { ObjectId } from 'mongoose';
 
