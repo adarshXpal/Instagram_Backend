@@ -83,7 +83,7 @@ JWT_SECRET=your_jwt_secret
 ### Run with Docker Compose:
 
 ```bash
-docker-compose up --build
+sudo docker-compose up --build
 ```
 
 ### Dockerfile Summary
