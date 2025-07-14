@@ -62,16 +62,34 @@ instagram_backend/
 
 ---
 
-## ⚙️ Environment Variables
+## 🔐 Environment Variables Documentation
 
-Place them in a `.env` file at the root.
+The application uses the following environment variables. Store them securely in a `.env` file at the root of your project:
 
-```
+| Variable Name | Required | Example / Default | Description |
+|---------------|----------|-------------------|-------------|
+| `MONGO_URI` | ✅ Yes | `"mongodb+srv://adarshXpal:rinkiya69@prototype.1h98yf7.mongodb.net/?retryWrites=true&w=majority&appName=Prototype"` | MongoDB connection string (use your own Atlas URI) |
+| `JWT_SECRET` | ✅ Yes | `Adarsh` | Secret key used for JWT signing and verification |
+| `EMAIL_USER` | ✅ Yes | `protoyoru07@gmail.com` | Gmail address for sending emails (e.g., reset password) |
+| `EMAIL_PASS` | ✅ Yes | `"uugz xzzt mxbi yzkp"` | Gmail App Password (not your real password) |
+| `NODE_ENV` | No | `development` | Defines environment (`development` or `production`) |
+| `PORT` | No | `3000` | Port on which server runs |
+| `REDIS_HOST` | No | `redis` | Redis host, usually `redis` in Docker |
+| `REDIS_PORT` | No | `6379` | Redis port |
+
+> ⚠️ **Important**: Keep `.env` files out of version control by adding them to `.gitignore`.
+
+### 📝 Sample `.env` File
+
+```env
+MONGO_URI="mongodb+srv://adarshXpal:rinkiya69@prototype.1h98yf7.mongodb.net/?retryWrites=true&w=majority&appName=Prototype"
+JWT_SECRET=Adarsh
+EMAIL_USER=protoyoru07@gmail.com
+EMAIL_PASS="uugz xzzt mxbi yzkp"
+NODE_ENV=development
 PORT=3000
-MONGO_URI=mongodb://mongo:27017/instagram
 REDIS_HOST=redis
 REDIS_PORT=6379
-JWT_SECRET=your_jwt_secret
 ```
 
 > ℹ️ Update values based on your Docker setup or local development needs.
