@@ -500,7 +500,7 @@ paths:
             schema:
               type: object
               properties:
-                content:
+                text:
                   type: string
       responses:
         '201':
