@@ -134,6 +134,7 @@ npm install
 Refer to the environment section above.
 
 ### 4. Build and run locally
+-Change REDIS_HOST=localhost in .env, if running locally !! 
 
 ```bash
 npm run build
