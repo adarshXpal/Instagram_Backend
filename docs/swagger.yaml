@@ -1,9 +1,17 @@
 openapi: 3.0.0
 info:
   title: Instagram Backend API
+  description: API documentation for Authentication, User, Follow, Post, and Comment routes
   version: 1.0.0
-  description: API documentation for Authentication routes
-
+servers:
+  - url: http://localhost:3000
+    description: Local server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 paths:
   /api/auth/register:
     post:
@@ -17,20 +25,19 @@ paths:
               type: object
               required: [username, email, password, fullName]
               properties:
-                username:
-                  type: string
                 email:
+                  type: string
+                fullName:
                   type: string
                 password:
                   type: string
-                fullName:
+                username:
                   type: string
       responses:
         '201':
           description: User created successfully
         '400':
           description: Missing or invalid fields / User already exists
-
   /api/auth/login:
     post:
       summary: Login user and receive JWT tokens in cookies
@@ -50,14 +57,8 @@ paths:
       responses:
         '200':
           description: Login successful
-          headers:
-            Set-Cookie:
-              description: Auth cookies set (token, refresh_token)
-              schema:
-                type: string
         '401':
           description: Invalid credentials
-
   /api/auth/logout:
     post:
       summary: Logout the user and clear auth cookies
@@ -65,7 +66,6 @@ paths:
       responses:
         '200':
           description: Logged out successfully
-
   /api/auth/refresh-token:
     post:
       summary: Refresh JWT token using cookie-stored refresh token
@@ -73,18 +73,10 @@ paths:
       responses:
         '200':
           description: Token refreshed successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
         '400':
           description: Refresh token is wrong or invalid
         '403':
           description: Not allowed
-
   /api/auth/forgot-password:
     post:
       summary: Request a password reset email
@@ -104,10 +96,691 @@ paths:
           description: Password reset link sent
         '404':
           description: User not found
+  /api/users/profile:
+    get:
+      summary: Get current user profile
+      tags: [User]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current user profile returned
+    put:
+      summary: Update user profile
+      tags: [User]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bio:
+                  type: string
+                username:
+                  type: string
+      responses:
+        '200':
+          description: Profile updated successfully
+  /api/users/upload-avatar:
+    post:
+      summary: Upload profile picture
+      tags: [User]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Avatar uploaded successfully
+  /api/users/account:
+    delete:
+      summary: Delete user account
+      tags: [User]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Account deleted successfully
+  /api/users/find/search:
+    get:
+      summary: Search users
+      tags: [User]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Users list returned
+  /api/users/{username}:
+    get:
+      summary: Get user profile by username
+      tags: [User]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User profile returned
+  /api/users/{targetUserId}/follow:
+    post:
+      summary: Follow/unfollow user
+      tags: [Follow]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: targetUserId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Follow/unfollow action performed
+  /api/users/{userId}/follow-request:
+    post:
+      summary: Send follow request (private accounts)
+      tags: [Follow]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Follow request sent
+  /api/users/{userId}/followers:
+    get:
+      summary: Get user's followers
+      tags: [Follow]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of followers returned
+  /api/users/{userId}/following:
+    get:
+      summary: Get user's following list
+      tags: [Follow]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of following users returned
+  /api/users/list/follow-requests:
+    get:
+      summary: Get pending follow requests
+      tags: [Follow]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of pending follow requests
+  /api/users/follow-requests/{requestId}:
+    put:
+      summary: Reject follow request
+      tags: [Follow]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: requestId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Follow request rejected
+  /api/users/follow-requests/{requestId}/accept:
+    put:
+      summary: Accept follow request
+      tags: [Follow]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: requestId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Follow request accepted
+  /api/posts:
+    post:
+      summary: Create a new post
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                post:
+                  type: string
+                  format: binary
+                caption:
+                  type: string
+      responses:
+        '201':
+          description: Post created successfully
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+    get:
+      summary: Get feed posts (paginated)
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Feed posts retrieved successfully
+        '400':
+          description: Bad request
+  /api/posts/{postId}:
+    get:
+      summary: Get specific post
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post retrieved successfully
+        '404':
+          description: Post not found
+    put:
+      summary: Update post caption/tags
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                caption:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Post updated successfully
+        '404':
+          description: Post not found
+    delete:
+      summary: Delete post
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post deleted successfully
+        '404':
+          description: Post not found
+  /api/posts/{postId}/like:
+    post:
+      summary: Like/Unlike post
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: [like, unlike]
+      responses:
+        '200':
+          description: Post liked/unliked successfully
+        '400':
+          description: Action must be either 'like' or 'unlike'
+        '404':
+          description: Post not found
+  /api/posts/{postId}/likes:
+    get:
+      summary: Get post likes
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Post likes retrieved successfully
+        '404':
+          description: Post not found
+  /api/posts/user/{userId}:
+    get:
+      summary: Get user's posts
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User's posts retrieved successfully
+        '400':
+          description: Bad request
+  /api/posts/{postId}/archive:
+    post:
+      summary: Archive/Unarchive post
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: [archive, unarchive]
+      responses:
+        '200':
+          description: Post archived/unarchived successfully
+        '400':
+          description: Action must be either 'archive' or 'unarchive'
+        '404':
+          description: Post not found
+  /api/posts/{postId}/comments:
+    post:
+      summary: Add a comment to a post
+      tags: [Comments]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+      responses:
+        '201':
+          description: Comment added successfully
+        '400':
+          description: Bad request
+    get:
+      summary: Get post comments (paginated)
+      tags: [Comments]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Post comments retrieved successfully
+        '400':
+          description: Bad request
+  /api/comments/{commentId}:
+    put:
+      summary: Update a comment
+      tags: [Comments]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+      responses:
+        '200':
+          description: Comment updated successfully
+        '404':
+          description: Comment not found
+        '400':
+          description: Bad request
+    delete:
+      summary: Delete a comment
+      tags: [Comments]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comment deleted successfully
+        '404':
+          description: Comment not found
+        '400':
+          description: Bad request
+  /api/comments/{commentId}/like:
+    post:
+      summary: Like or unlike a comment
+      tags: [Comments]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: [like, unlike]
+      responses:
+        '200':
+          description: Comment liked/unliked successfully
+        '400':
+          description: Bad request
+        '404':
+          description: Comment not found
+  /api/comments/{commentId}/reply:
+    post:
+      summary: Reply to a comment
+      tags: [Comments]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+      responses:
+        '201':
+          description: Replied to comment successfully
+        '400':
+          description: Bad request
+  /api/stories:
+    post:
+      summary: Create a new story
+      tags: [Stories]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                story:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Story created successfully
+        '400':
+          description: Story not found
+    get:
+      summary: Get stories feed
+      tags: [Stories]
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Stories feed retrieved successfully
+        '400':
+          description: Bad request
 
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+  /api/stories/user/{userId}:
+    get:
+      summary: Get user's stories
+      tags: [Stories]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User's stories retrieved successfully
+        '400':
+          description: Bad request
+
+  /api/stories/{storyId}/view:
+    post:
+      summary: Mark story as viewed
+      tags: [Stories]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: storyId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Story marked as viewed successfully
+        '404':
+          description: Story not found
+
+  /api/stories/{storyId}:
+    delete:
+      summary: Delete story
+      tags: [Stories]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: storyId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Story deleted successfully
+        '404':
+          description: Story not found
+  /api/media/upload:
+    post:
+      summary: Upload image/video
+      tags: [Media]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: File uploaded successfully
+        '500':
+          description: Something went wrong
+
+  /api/media/upload/multiple:
+    post:
+      summary: Upload multiple files
+      tags: [Media]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '201':
+          description: Files uploaded successfully
+        '400':
+          description: No file found
+        '500':
+          description: Something went wrong
+
+  /api/media/{mediaId}:
+    delete:
+      summary: Delete uploaded media
+      tags: [Media]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: mediaId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: File deleted successfully
+        '500':
+          description: Something went wrong
