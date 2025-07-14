@@ -113,19 +113,6 @@ sudo docker-compose up --build
 
 ---
 
-## 🔹 API Documentation
-
-You can find the API endpoints categorized in the screenshots provided in this repository:
-
-- **Authentication APIs**
-- **User Management APIs**
-- **Follow System APIs**
-- **Posts, Comments, Stories, and Media Upload APIs**
-
-> For full request/response examples, please refer to the [Postman collection or Swagger](#) *(placeholder)*
-
----
-
 ## ✍️ Running Locally
 
 ### 1. Clone the repository
